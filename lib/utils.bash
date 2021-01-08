@@ -12,26 +12,8 @@ fail() {
 
 curl_opts=(-fsSL)
 
-# NOTE: You might want to remove this if stardog is not hosted on GitHub releases.
-if [ -n "${GITHUB_API_TOKEN:-}" ]; then
-  curl_opts=("${curl_opts[@]}" -H "Authorization: token $GITHUB_API_TOKEN")
-fi
-
-sort_versions() {
-  sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' |
-    LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | awk '{print $2}'
-}
-
-list_github_tags() {
-  git ls-remote --tags --refs "$GH_REPO" |
-    grep -o 'refs/tags/.*' | cut -d/ -f3- |
-    sed 's/^v//' # NOTE: You might want to adapt this sed to remove non-version strings from tags
-}
-
 list_all_versions() {
-  # TODO: Adapt this. By default we simply list the tag names from GitHub releases.
-  # Change this function if stardog has other means of determining installable versions.
-  list_github_tags
+  jfrog rt s "stardog-binaries/**/stardog*zip" | jq '.[] | .path|capture("stardog-(?<v>\\d.+).zip") | .v'
 }
 
 download_release() {
@@ -40,7 +22,7 @@ download_release() {
   filename="$2"
 
   # TODO: Adapt the release URL convention for stardog
-  url="$GH_REPO/archive/v${version}.tar.gz"
+  url="https://$artifactoryUsername:$artifactoryPassword@stardog.jfrog.io/artifactory/stardog-binaries/complexible/stardog/stardog-${version}.zip"
 
   echo "* Downloading stardog release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -56,16 +38,17 @@ install_version() {
   fi
 
   # TODO: Adapt this to proper extension and adapt extracting strategy.
-  local release_file="$install_path/stardog-$version.tar.gz"
+  local release_file="$install_path/stardog-$version.zip"
   (
     mkdir -p "$install_path"
     download_release "$version" "$release_file"
-    tar -xzf "$release_file" -C "$install_path" --strip-components=1 || fail "Could not extract $release_file"
+
+    unzip "$release_file" -d "$install_path" || fail "Could not extract $release_file"
     rm "$release_file"
 
     # TODO: Asert stardog executable exists.
     local tool_cmd
-    tool_cmd="$(echo "version" | cut -d' ' -f1)"
+    tool_cmd="$(echo "stardog version" | cut -d' ' -f1)"
     test -x "$install_path/bin/$tool_cmd" || fail "Expected $install_path/bin/$tool_cmd to be executable."
 
     echo "stardog $version installation was successful!"
