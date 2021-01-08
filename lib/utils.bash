@@ -49,7 +49,7 @@ install_version() {
     # TODO: Asert stardog executable exists.
     local tool_cmd
     tool_cmd="$(echo "stardog version" | cut -d' ' -f1)"
-    test -x "$install_path/bin/$tool_cmd" || fail "Expected $install_path/bin/$tool_cmd to be executable."
+    test -x "$install_path/stardog-$version/bin/$tool_cmd" || fail "Expected $install_path/stardog-$version/bin/$tool_cmd to be executable."
 
     echo "stardog $version installation was successful!"
   ) || (
