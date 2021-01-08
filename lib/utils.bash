@@ -45,6 +45,8 @@ install_version() {
 
     unzip "$release_file" -d "$install_path" || fail "Could not extract $release_file"
     rm "$release_file"
+    mv "$install_path/stardog-$version/* $install_path/"
+    rm -rf "$install_path/stardog-$version"
 
     # TODO: Asert stardog executable exists.
     local tool_cmd
