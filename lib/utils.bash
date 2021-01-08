@@ -43,10 +43,8 @@ install_version() {
     mkdir -p "$install_path"
     download_release "$version" "$release_file"
 
-    unzip "$release_file" -d "$install_path" || fail "Could not extract $release_file"
+    unzip "$release_file" "stardog-$version/**/*" -d "$install_path" || fail "Could not extract $release_file"
     rm "$release_file"
-    mv "$install_path/stardog-$version/*" "$install_path/"
-    rm -rf "$install_path/stardog-$version"
 
     # TODO: Asert stardog executable exists.
     local tool_cmd
