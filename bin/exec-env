@@ -1,2 +1,23 @@
 #!/usr/bin/env bash
 
+export STARDOG_SERVER_JAVA_ARGS="$STARDOG_SERVER_JAVA_ARGS -Djava.library.path=$ASDF_INSTALL_PATH/lib"
+
+# STARDOG_HOME
+if [ -z "$STARDOG_HOME" ]; then
+  if [ -f "$PWD/.stardog-home" ]; then
+    read -r SH < .stardog-home
+  elif [ -f "$HOME/.stardog-home" ]; then
+    read -r SH < $HOME/.stardog-home
+  fi
+  export STARDOG_HOME="$SH"
+fi
+
+# STARDOG_HOME
+if [ -z "$STARDOG_EXT" ]; then
+  if [ -f "$PWD/.stardog-ext" ]; then
+    read -r EXT < .stardog-ext
+  elif [ -f "$HOME/.stardog-ext" ]; then
+    read -r EXT < $HOME/.stardog-ext
+  fi
+  export STARDOG_EXT="$EXT"
+fi

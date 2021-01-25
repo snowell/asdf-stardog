@@ -10,7 +10,8 @@ fail() {
   exit 1
 }
 
-curl_opts=(-fsSL)
+# curl_opts=(-fsSL)
+curl_opts=(-fL)
 
 list_all_versions() {
   jfrog rt s "stardog-binaries/**/stardog*zip" | jq '.[] | .path|capture("stardog-(?<v>\\d.+).zip") | .v'
@@ -38,18 +39,20 @@ install_version() {
   fi
 
   # TODO: Adapt this to proper extension and adapt extracting strategy.
-  local release_file="$install_path/stardog-$version.zip"
+  local release_file="$ASDF_DOWNLOAD_PATH/stardog-$version.zip"
   (
     mkdir -p "$install_path"
-    download_release "$version" "$release_file"
 
-    unzip "$release_file" "stardog-$version/**/*" -d "$install_path" || fail "Could not extract $release_file"
-    rm "$release_file"
+    unzip "$release_file" -d "$install_path" || fail "Could not extract $release_file"
+  #  rm "$release_file"
+
+    mv $install_path/stardog-$version/* $install_path/
+    rm -rf "$install_path/stardog-$version"
 
     # TODO: Asert stardog executable exists.
     local tool_cmd
     tool_cmd="$(echo "stardog version" | cut -d' ' -f1)"
-    test -x "$install_path/stardog-$version/bin/$tool_cmd" || fail "Expected $install_path/stardog-$version/bin/$tool_cmd to be executable."
+    test -x "$install_path/bin/$tool_cmd" || fail "Expected $install_path/bin/$tool_cmd to be executable."
 
     echo "stardog $version installation was successful!"
   ) || (

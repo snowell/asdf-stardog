@@ -16,16 +16,14 @@
 
 # Dependencies
 
-- `bash`, `curl`, `tar`: generic POSIX utilities.
-- `SOME_ENV_VAR`: set this environment variable in your shell config to load the correct version of tool x.
+- Java 8 or 11
+- `$artifactoryUsername` and `$artifactoryPassword` set in your environment
 
 # Install
 
 Plugin:
 
 ```shell
-asdf plugin add stardog
-# or
 asdf plugin add https://github.com/snowell/asdf-stardog.git
 ```
 
@@ -41,8 +39,11 @@ asdf install stardog latest
 # Set a version globally (on your ~/.tool-versions file)
 asdf global stardog latest
 
-# Now stardog commands are available
-version
+# Set Stardog Home globally (on your ~/.stardog-home file)
+asdf stardog home global /var/opt/stardog
+
+# Set Stardog Ext locally (on your ./.stardog-ext file)
+asdf stardog ext local /opt/stardog_ext
 ```
 
 Check [asdf](https://github.com/asdf-vm/asdf) readme for more instructions on how to
