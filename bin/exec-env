@@ -12,7 +12,7 @@ if [ -z "$STARDOG_HOME" ]; then
   export STARDOG_HOME="$SH"
 fi
 
-# STARDOG_HOME
+# STARDOG_EXT
 if [ -z "$STARDOG_EXT" ]; then
   if [ -f "$PWD/.stardog-ext" ]; then
     read -r EXT < .stardog-ext

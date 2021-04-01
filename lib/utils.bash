@@ -15,18 +15,20 @@ curl_opts=(-fL)
 
 list_all_versions() {
   jfrog rt s "stardog-binaries/**/stardog*zip" | jq '.[] | .path|capture("stardog-(?<v>\\d.+).zip") | .v'
+  jfrog rt s "stardog-testing/nightly-develop-snapshot/binaries/complexible/stardog/stardog*zip" | jq '.[] | .path|capture("stardog-(?<v>\\d.+).zip") | .v'
 }
 
 download_release() {
-  local version filename url
+  local version filename url snapUrl
   version="$1"
   filename="$2"
 
   # TODO: Adapt the release URL convention for stardog
   url="https://$artifactoryUsername:$artifactoryPassword@stardog.jfrog.io/artifactory/stardog-binaries/complexible/stardog/stardog-${version}.zip"
+  snapUrl="https://$artifactoryUsername:$artifactoryPassword@stardog.jfrog.io/artifactory/stardog-testing/nightly-develop-snapshot/binaries/complexible/stardog/stardog-${version}.zip"
 
   echo "* Downloading stardog release $version..."
-  curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
+  curl "${curl_opts[@]}" -o "$filename" -C - "$url" || curl "${curl_opts[@]}" -o "$filename" -C - "$snapUrl" || fail "Could not download $url"
 }
 
 install_version() {
