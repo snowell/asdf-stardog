@@ -24,7 +24,7 @@
 Plugin:
 
 ```shell
-asdf plugin add https://github.com/snowell/asdf-stardog.git
+asdf plugin add stardog https://github.com/snowell/asdf-stardog.git
 ```
 
 stardog:
