@@ -18,6 +18,8 @@
 
 - Java 8 or 11
 - `$artifactoryUsername` and `$artifactoryPassword` set in your environment
+- [jFrog CLI](https://jfrog.com/getcli/)
+- [jq](https://stedolan.github.io/jq/download/)
 
 # Install
 
