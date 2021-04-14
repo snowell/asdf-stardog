@@ -21,3 +21,15 @@ if [ -z "$STARDOG_EXT" ]; then
   fi
   export STARDOG_EXT="$EXT"
 fi
+
+# STARDOG_LICENSE_PATH
+if [ -z "$STARDOG_LICENSE_PATH" ]; then
+  if [ -f "$PWD/.stardog-license-path" ]; then
+    read -r SLP < .stardog-license-path
+  elif [ -f "$HOME/.stardog-license-path" ]; then
+    read -r SLP < $HOME/.stardog-license-path
+  fi
+  if [ -n "$SLP" ]; then
+    export STARDOG_LICENSE_PATH="$SLP"
+  fi
+fi

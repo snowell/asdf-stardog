@@ -8,6 +8,8 @@ elif [ -f "$PWD/.stardog-home" ]; then
 elif [ -f "$HOME/.stardog-home" ]; then
   read -r homedir < $HOME/.stardog-home
   echo -e "Stardog Home\t$homedir\t$HOME/.stardog-home"
+else
+  echo -e "Stardog Home\t[Not set]"
 fi
 
 if [ -n "$STARDOG_EXT" ]; then
@@ -18,4 +20,18 @@ elif [ -f "$PWD/.stardog-ext" ]; then
 elif [ -f "$HOME/.stardog-ext" ]; then
   read -r extdir < $HOME/.stardog-ext
   echo -e "Stardog Ext\t$extdir\t$HOME/.stardog-ext"
+else
+  echo -e "Stardog Ext\t[Not set]"
+fi
+
+if [ -n "$STARDOG_LICENSE_PATH" ]; then
+  echo -e "Stardog License\t$STARDOG_LICENSE_PATH\t\$STARDOG_LICENSE_PATH"
+elif [ -f "$PWD/.stardog-license-path" ]; then
+  read -r licpath < .stardog-license-path
+  echo -e "Stardog License\t$licpath\t$PWD/.stardog-license-path"
+elif [ -f "$HOME/.stardog-license-path" ]; then
+  read -r licpath < $HOME/.stardog-license-patht
+  echo -e "Stardog License\t$licpath\t$HOME/.stardog-license-path"
+else
+  echo -e "Stardog License\t[Not set]"
 fi
