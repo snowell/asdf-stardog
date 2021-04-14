@@ -30,7 +30,7 @@ elif [ -f "$PWD/.stardog-license-path" ]; then
   read -r licpath < .stardog-license-path
   echo -e "Stardog License\t$licpath\t$PWD/.stardog-license-path"
 elif [ -f "$HOME/.stardog-license-path" ]; then
-  read -r licpath < $HOME/.stardog-license-patht
+  read -r licpath < $HOME/.stardog-license-path
   echo -e "Stardog License\t$licpath\t$HOME/.stardog-license-path"
 else
   echo -e "Stardog License\t[Not set]"
