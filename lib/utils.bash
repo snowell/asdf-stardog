@@ -49,7 +49,9 @@ install_version() {
   #  rm "$release_file"
 
     mv $install_path/stardog-$version/* $install_path/
-    rm -rf "$install_path/stardog-$version"
+    rm -rf $install_path/stardog-$version
+    # Get rid of extra shims
+    rm $install_path/bin/*.bat $install_path/bin/*.exe
 
     # TODO: Asert stardog executable exists.
     local tool_cmd
