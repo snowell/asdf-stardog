@@ -22,7 +22,7 @@
   - ensure you've logged in using in using your Artifactory credentials)
 
   ```
-  jfrog rt config --url=https://stardog.jfrog.io/artifactory --user=username --password=password
+  jfrog config add --interactive=false --artifactory-url https://stardog.jfrog.io/stardog/ --user $artifactoryUsername --password $artifactoryPassword stardog
   ```
 
 - [jq](https://stedolan.github.io/jq/download/)
